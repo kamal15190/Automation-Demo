@@ -19,8 +19,11 @@ public class SpaceXAPIScenarios {
 	RequestSpecification request;
 	ConfigReader config;
 	public static final String BASE_URI = "https://api.spacexdata.com";
-	
-	/* All the value which is not going change we can get from Config.properties file */
+
+	/*
+	 * All the value which is not going change we can get from Config.properties
+	 * file
+	 */
 
 	@Test(priority = 0)
 	public void get_SpaceX_Latest_Launch_Details() throws IOException {
@@ -95,6 +98,21 @@ public class SpaceXAPIScenarios {
 		Assert.assertEquals(wikipedia, "https://en.wikipedia.org/wiki/IXPE", "Wikipedia URL is wrong..!");
 
 		Assert.assertEquals(presskit, null, "Presskit is not Null..!");
+
+	}
+
+	@Test(priority = 5)
+	public void validate_the_Negative_Scenarios_404() {
+
+		RestAssured.baseURI = BASE_URI;
+		request = RestAssured.given();
+
+		request.header("Content-type", "Application/json");
+		request.header("accept", "Application/json");
+
+		response = request.get("/v4/launches/latests");
+
+		Assert.assertEquals(response.getStatusCode(), 404, "Status code must be 404 for wrong urls..!");
 
 	}
 
